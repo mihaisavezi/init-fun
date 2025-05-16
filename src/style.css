@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+  cursor: url('/public/icon.svg'), auto;
+}
+
+
+
+#image-container {
+  width: 700px; /* Adjust as needed */
+  min-height: 100vh;
+  position: relative; /* Important for positioning children */
+  /* Replace with your image: */
+  background: linear-gradient(to bottom right, #f0f0f0, #fff);
+  /* If using an image: */
+  /* background-image: url('https://picsum.photos/700/500'); */
+  background-size: cover;
+  background-position: center;
+  border: 1px solid #ccc;
+  overflow: hidden; /* To contain squares if they move/grow too much */
+}
+
+
+.square-container {
+  box-sizing: border-box; /* Border doesn't add to width/height */
+  transition: transform 0.1s ease-out; /* Smooth animations */
+  /* height: inherit; // Removed, will be set on individual squares */
+  /* width: 100%;    // Removed, will be set on individual squares */
+}
+
+#square1 {
+  border: 3px solid; /* Tomato color */
+  top: 100px;
+  left: 150px;
+  filter: grayscale(100%) brightness(0);
+  width: 100px; /* Example explicit width */
+  height: 100px; /* Example explicit height */
+}
+
+#square2 {
+  border: 3px solid; /* Lime green */
+  top: 250px;
+  left: 400px;
+  transform-origin: center center;
+  z-index: 100; /* Scale from the center */
+  width: 120px; /* Example explicit width */
+  height: 120px; /* Example explicit height */
+  filter: grayscale(100%) brightness(0);
+}
+
+#controls {
+  padding: 15px;
+  background-color: #e9e9e9;
+  border-radius: 5px;
+  border: 1px solid #d0d0d0;
+  z-index: 1;
+  position: fixed;
+}
+#controls label {
+  display: block;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+#controls input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+/* Custom Cursor Trail */
+.cursor-trail {
+  position: absolute;
+  width: 20px; /* Size of the trail circle */
+  height: 20px;
+  background-color: rgba(0, 123, 255, 0.5); /* Semi-transparent blue */
+  border-radius: 50%; /* Make it a circle */
+  pointer-events: none; /* Ensure it doesn't interfere with mouse events */
+  transform: translate(calc(-50% - 5px), calc(-50% + 50px)); /* Offset: 5px left, 5px down */
+  /* Center the circle on the cursor tip */
+  transition: transform 0.05s ease-out; /* Smooth movement */
+  z-index: 999; /* Ensure it's above other elements */
+}
+
+/* Clicked Circle Effect */
+.clicked-circle {
+  position: absolute;
+  width: 30px; /* Size of the clicked circle */
+  height: 30px;
+  background-color: rgba(0, 123, 255, 0.7); 
+  border-radius: 50%; /* Make it a circle */
+  pointer-events: none; /* Ensure it doesn't interfere with mouse events */
+  transform: translate(calc(-50% - 5px), calc(-50% + 50px)); /* Center the circle on the click point */
+  opacity: 1;
+  transition: opacity 0.5s ease-out; /* Fade out animation */
+}
+
+.clicked-circle.fade-out {
+  opacity: 0;
+}
