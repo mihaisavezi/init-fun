@@ -45,6 +45,7 @@ body {
   left: 150px;
   filter: grayscale(100%) brightness(0);
   height: 100px; /* Example explicit height */
+  transition: transform 0.3s ease-out;
 }
 
 #square2 {
@@ -79,7 +80,7 @@ body {
   position: absolute;
   width: 20px; /* Size of the trail circle */
   height: 20px;
-  background-color: rgba(0, 123, 255, 0.5); /* Semi-transparent blue */
+  background-color: rgba(0, 71, 147, 0.5); /* Semi-transparent blue */
   border-radius: 50%; /* Make it a circle */
   pointer-events: none; /* Ensure it doesn't interfere with mouse events */
   transform: translate(calc(-50% - 5px), calc(-50% + 50px)); /* Offset: 5px left, 5px down */
@@ -93,7 +94,7 @@ body {
   position: absolute;
   width: 30px; /* Size of the clicked circle */
   height: 30px;
-  background-color: rgba(0, 123, 255, 0.7); 
+  background-color: rgba(0, 71, 147, 0.5);
   border-radius: 50%; /* Make it a circle */
   pointer-events: none; /* Ensure it doesn't interfere with mouse events */
   transform: translate(calc(-50% - 5px), calc(-50% + 50px)); /* Center the circle on the click point */
