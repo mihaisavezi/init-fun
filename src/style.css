@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+#image-container.hovered {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 
 body {
   margin: 0;

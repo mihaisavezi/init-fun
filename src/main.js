@@ -1,4 +1,20 @@
 import "./style.css";
+
+document.addEventListener('touchstart', (event) => {
+  console.log('touchstart', event.touches[0].clientX, event.touches[0].clientY, event.timeStamp);
+});
+
+document.addEventListener('touchmove', (event) => {
+  console.log('touchmove', event.touches[0].clientX, event.touches[0].clientY, event.timeStamp);
+});
+
+document.addEventListener('touchend', (event) => {
+  console.log('touchend', event.changedTouches[0].clientX, event.changedTouches[0].clientY, event.timeStamp);
+});
+
+document.addEventListener('touchcancel', (event) => {
+  console.log('touchcancel', event.touches[0].clientX, event.touches[0].clientY, event.timeStamp);
+});
 const container = document.getElementById("image-container");
 const square1 = document.getElementById("square1");
 const square2 = document.getElementById("square2");
@@ -164,8 +180,9 @@ container.addEventListener("touchmove", function (event) {
 });
 
 container.addEventListener("touchstart", function(event) {
-  // Show cursor trail when mouse enters the container
+  // Show cursor trail when touch starts
   cursorTrail.style.opacity = 1;
+  container.classList.add("hovered");
 });
 
 container.addEventListener("touchend", function () {
@@ -175,8 +192,21 @@ container.addEventListener("touchend", function () {
   if (isSquare2EffectActive) {
     resetSquare2();
   }
-  // Hide cursor trail when mouse leaves the container
+  // Hide cursor trail when touch ends
   cursorTrail.style.opacity = 0;
+  container.classList.remove("hovered");
+});
+
+container.addEventListener("touchcancel", function () {
+  if (isSquare1EffectActive) {
+    resetSquare1();
+  }
+  if (isSquare2EffectActive) {
+    resetSquare2();
+  }
+  // Hide cursor trail when touch is cancelled
+  cursorTrail.style.opacity = 0;
+  container.classList.remove("hovered");
 });
 
 // Listen for clicks to add circles
@@ -220,6 +250,38 @@ toggleSquare1Effect.addEventListener("change", function () {
   if (!isSquare1EffectActive) {
     resetSquare1(); // Reset immediately if disabled
   }
+});
+
+// --- Long Press Event Listener ---
+let longPressTimer;
+const longPressDelay = 500; // Adjust as needed
+
+container.addEventListener("touchstart", function (event) {
+  longPressTimer = setTimeout(() => {
+    // Trigger the same action as the click event
+    const rect = container.getBoundingClientRect();
+    const touch = event.touches[0];
+    const clickX = touch.clientX - rect.left;
+    const clickY = touch.clientY - rect.top;
+
+    // Create and add a new circle element
+    const clickedCircle = document.createElement("div");
+    clickedCircle.classList.add("clicked-circle");
+    clickedCircle.style.left = `${clickX}px`;
+    clickedCircle.style.top = `${clickY}px`;
+    container.appendChild(clickedCircle);
+    
+    // Add the circle to the tracking array
+    addedCircles.push(clickedCircle);
+  }, longPressDelay);
+});
+
+container.addEventListener("touchend", function () {
+  clearTimeout(longPressTimer);
+});
+
+container.addEventListener("touchcancel", function () {
+  clearTimeout(longPressTimer);
 });
 
 toggleSquare2Effect.addEventListener("change", function () {
