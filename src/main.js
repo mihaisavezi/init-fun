@@ -144,6 +144,41 @@ container.addEventListener("mouseenter", function() {
     cursorTrail.style.opacity = 1;
 });
 
+// --- Touch Event Listeners ---
+container.addEventListener("touchmove", function (event) {
+  const rect = container.getBoundingClientRect();
+  const touch = event.touches[0];
+  const mouseX = touch.clientX - rect.left;
+  const mouseY = touch.clientY - rect.top;
+
+  if (isSquare1EffectActive) {
+    updateSquare1Behavior(mouseX, mouseY);
+  }
+  if (isSquare2EffectActive) {
+    updateSquare2Behavior(mouseX, mouseY);
+  }
+
+  // Update custom cursor trail position
+  cursorTrail.style.left = `${mouseX}px`;
+  cursorTrail.style.top = `${mouseY}px`;
+});
+
+container.addEventListener("touchstart", function(event) {
+  // Show cursor trail when mouse enters the container
+  cursorTrail.style.opacity = 1;
+});
+
+container.addEventListener("touchend", function () {
+  if (isSquare1EffectActive) {
+    resetSquare1();
+  }
+  if (isSquare2EffectActive) {
+    resetSquare2();
+  }
+  // Hide cursor trail when mouse leaves the container
+  cursorTrail.style.opacity = 0;
+});
+
 // Listen for clicks to add circles
 container.addEventListener("click", function (event) {
   const rect = container.getBoundingClientRect();
@@ -161,19 +196,22 @@ container.addEventListener("click", function (event) {
   addedCircles.push(clickedCircle);
 });
 
-// Listen to checkbox changes
-toggleSquare1Effect.addEventListener("change", function () {
-  isSquare1EffectActive = this.checked;
-  if (!isSquare1EffectActive) {
-    resetSquare1(); // Reset immediately if disabled
-  }
-});
+// Listen for touchstarts to add circles
+container.addEventListener("touchstart", function (event) {
+  const rect = container.getBoundingClientRect();
+  const touch = event.touches[0];
+  const clickX = touch.clientX - rect.left;
+  const clickY = touch.clientY - rect.top;
 
-toggleSquare2Effect.addEventListener("change", function () {
-  isSquare2EffectActive = this.checked;
-  if (!isSquare2EffectActive) {
-    resetSquare2(); // Reset immediately if disabled
-  }
+  // Create and add a new circle element
+  const clickedCircle = document.createElement("div");
+  clickedCircle.classList.add("clicked-circle");
+  clickedCircle.style.left = `${clickX}px`;
+  clickedCircle.style.top = `${clickY}px`;
+  container.appendChild(clickedCircle);
+  
+  // Add the circle to the tracking array
+  addedCircles.push(clickedCircle);
 });
 
 // Listen to checkbox changes
