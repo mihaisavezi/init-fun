@@ -80,11 +80,26 @@ function updateSquare2Behavior(mouseX, mouseY) {
 function resetSquare1() {
   square1.style.transform = "translate(0, 0)";
 
-  // Remove added circles
-  addedCircles.forEach(circle => {
-    container.removeChild(circle);
+  // Get the current position and dimensions of square1
+  const s1Rect = square1.getBoundingClientRect();
+
+  // Remove added circles that are within the bounds of square1
+  addedCircles = addedCircles.filter(circle => {
+    const circleRect = circle.getBoundingClientRect();
+    const isWithinSquare1 = (
+      circleRect.left >= s1Rect.left &&
+      circleRect.right <= s1Rect.right &&
+      circleRect.top >= s1Rect.top &&
+      circleRect.bottom <= s1Rect.bottom
+    );
+
+    if (isWithinSquare1) {
+      container.removeChild(circle);
+      return false; // Remove from the array
+    } else {
+      return true; // Keep in the array
+    }
   });
-  addedCircles = [];
 }
 
 function resetSquare2() {
